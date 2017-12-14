@@ -19,49 +19,47 @@ connection.connect(function(err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId + "\n");
   readProducts();
-  start();
   
 });
-function start() {
-  inquirer.prompt([
-    {
-    name: "item",
-    type: "input",
-    message: "What is the id of the item you would like to purchase?"
-    },
-    {
-      name: "quantity",
-      type: "input",
-      message: "How many units would you like to purchase?"
-    }
-  ]).then(function(answer) {
+// function start() {
+//   inquirer.prompt([
+//     {
+//     name: "item",
+//     type: "input",
+//     message: "What is the id of the item you would like to purchase?"
+//     },
+//     {
+//       name: "quantity",
+//       type: "input",
+//       message: "How many units would you like to purchase?"
+//     }
+//   ]).then(function(answer) {
 
-    connection.query(
-      "INSERT INTO products SET ?",
-      {
-        item_id: answer.item,
-        quantity: answer.quantity,
-      },
-  function(err) {
-  if(err) throw err;
-  console.log("your purchase was successfull");
-  readProducts();
-  start();
-      }
-    );
-  });
-}
-
+//     connection.query(
+//       "INSERT INTO products SET ?",
+//       {
+//         item_id: answer.item,
+//         quantity: answer.quantity,
+//       },
+//   function(err) {
+//   if(err) throw err;
+//   console.log("your purchase was successfull");
+//   readProducts();
+//       }
+//     );
+//   });
+// }
 
 
-function readProducts() {
-  console.log("Selecting all products...\n");
-  connection.query("SELECT * FROM products", function(err, res) {
-    if (err) throw err;
-    // Log all results of the SELECT statement
-    console.log(res);
+
+// function readProducts() {
+//   console.log("Selecting all products...\n");
+//   connection.query("SELECT * FROM products", function(err, res) {
+//     if (err) throw err;
+//     // Log all results of the SELECT statement
+//     console.log(res);
     
-  });
-}
+//   });
+// }
 
 connection.end();

@@ -1,5 +1,6 @@
-var inquire = require ("inquirer");
 var mysql = require ("mysql");
+var inquire = require ("inquirer");
+
 
 'use strict';
 
@@ -16,14 +17,16 @@ var connection = mysql.createConnection({
 });
 
 connection.connect(function(err) {
-  if (err) throw err;
+  if (err) 
+    throw err
   console.log("connected as id " + connection.threadId + "\n");
   readProducts();
   start();
-  
 });
+
+
 function start() {
-  inquirer.prompt([
+  inquirer.prompt(
     {
     name: "item",
     type: "input",
@@ -32,23 +35,33 @@ function start() {
     {
       name: "quantity",
       type: "input",
-      message: "How many units would you like to purchase?"
+      message: "How many units would you like to purchase?",
+      validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
     }
-  ]).then(function(answer) {
+  ).then(function(answer) {
+    parseInt(answer.item);
 
+    //var query = "SELECT * item_id, quantity FROM products WHERE quantity item_id: answer.item";
     connection.query(
-      "INSERT INTO products SET ?",
+      "UPDATE products SET ? WHERE ?",
+      [
       {
-        item_id: answer.item,
-        quantity: answer.quantity,
+        item_id: answer.item
       },
-  function(err) {
-  if(err) throw err;
-  console.log("your purchase was successfull");
-  readProducts();
-  start();
+      {
+        quantity: answer.quantity - products.quantity
       }
-    );
+      ],
+      function(err) {
+          if (err) throw err;
+          console.log("Your purchase was Successful!");
+        }
+      );
   });
 }
 
@@ -60,8 +73,6 @@ function readProducts() {
     if (err) throw err;
     // Log all results of the SELECT statement
     console.log(res);
-    
-  });
+     });
 }
 
-connection.end();

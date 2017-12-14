@@ -18,7 +18,12 @@
   "homepage": "https://github.com/willhoy61/bamazon#readme",
   "dependencies": {
     "inquirer": "^4.0.1",
+<<<<<<< HEAD
     "mysql": "^2.15.0"
   },
   "devDependencies": {}
+=======
+    "mysql": "github:mysqljs/mysql"
+  }
+>>>>>>> ec63c6cf29c7831a0ce4e63797e8dc0ae6206027
 }

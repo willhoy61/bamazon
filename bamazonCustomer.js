@@ -1,9 +1,9 @@
 var mysql = require ("mysql");
-var inquire = require ("inquirer");
+var inquirer = require ("inquirer");
 
 
 'use strict';
-
+// connect to mysql database
 var connection = mysql.createConnection({
   host: "localhost",
   port: 8889,
@@ -15,17 +15,16 @@ var connection = mysql.createConnection({
   password: "root",
   database: "bamazon_DB"
 });
-
+// connect to database and log thread id
 connection.connect(function(err) {
   if (err) 
     throw err
   console.log("connected as id " + connection.threadId + "\n");
   readProducts();
-  start();
 });
 
-
-function start() {
+// inquirer function asks user what they would like to purchase and how many
+function start(res) {
   inquirer.prompt(
     {
     name: "item",
@@ -44,17 +43,16 @@ function start() {
         }
     }
   ).then(function(answer) {
-    parseInt(answer.item);
-
-    //var query = "SELECT * item_id, quantity FROM products WHERE quantity item_id: answer.item";
+    res[answer.item].
+    //var query = "SELECT  item_id, quantity FROM products WHERE quantity item_id: answer.item";
     connection.query(
       "UPDATE products SET ? WHERE ?",
       [
       {
-        item_id: answer.item
+        quantity: answer.quantity - products.quantity
       },
       {
-        quantity: answer.quantity - products.quantity
+        item_id: answer.item
       }
       ],
       function(err) {
@@ -65,14 +63,13 @@ function start() {
   });
 }
 
-
-
 function readProducts() {
   console.log("Selecting all products...\n");
   connection.query("SELECT * FROM products", function(err, res) {
     if (err) throw err;
     // Log all results of the SELECT statement
     console.log(res);
+      start(res);
      });
 }
 

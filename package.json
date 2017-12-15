@@ -4,6 +4,7 @@
   "description": "sql DB takes orders and subtracts inventory",
   "main": "bamazonCustomer.js",
   "dependencies": {
+    "eslint": "^4.13.1",
     "inquirer": "^4.0.1",
     "mysql": "^2.15.0"
   },

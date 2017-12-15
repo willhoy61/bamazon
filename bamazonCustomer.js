@@ -28,7 +28,7 @@ function start() {
 readProducts();
   var id;
   var quanUP = 0;
-  connection.query("SELECT  * FROM bamazon.products", function(err, results) {
+  connection.query("SELECT * FROM products", function(err, results) {
     if (err) throw err;
   inquirer
   .prompt([
@@ -41,18 +41,20 @@ readProducts();
     type: "input",
     message: "How many would you like to purchase?"
   }
-]).then(function(id) {
+  //answer takes user input and returns it to item_id user is purchasing
+]).then(function(answer) {
   for(var i=0; i<results.length; i++) {
-    if(results[i].item == id.item) {
+    if(results[i].answer == answer.item) {
       id = results[i];
-
+        //if validates that there is enough quantity for user to purchase
         if(results[i].quantity < id.quantity) {
           console.log("we do not have any more in stock");
           start();
         } else if(results[i].quantity >= id.quantity) {
           price(id.quantity, id.price);
-          purchase(results[i].quantity, id.quantity, id.item)
+          purchase(results[i].quantity, id.quantity, id.item);
         }
+        updateDb(quanUp);
     }
   }
 })
@@ -75,7 +77,7 @@ function (err) {
   connection.end();
 };
 // validates users purchase and makes sure they want to proceed
-function purchase (a, b, c) {
+function purchase (q, p, r) {
   inquirer.prompt([{
     name: "yesorno",
     type: "rawlist",
@@ -83,12 +85,12 @@ function purchase (a, b, c) {
     choices: ["yes", "no"]
   }]).then(function(answer){
     if(answer.yesorno.toLowerCase() === "yes") {
-      quanUp(a, b, c);
+      quanUp(q, p, r);
     } else {
       start();
     }
   })
-};
+}
 
 
 // shows user inventory available to purchase

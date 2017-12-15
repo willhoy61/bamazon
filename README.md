@@ -10,3 +10,5 @@ prompts selection
 which item would you like to purchase and how many?
 
 updates database with depleted inventory when finished
+
+///////////screen shot pngs in node to display before and after running program////////

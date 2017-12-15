@@ -12,13 +12,17 @@ var connection = mysql.createConnection({
 
   // Your password
   password: "root",
-  database: "bamazon_DB"
+  database: "bamazon_db"
 });
 // connect to database and log thread id calls function to show invenetory
 connection.connect(function(err) {
   if (err) 
-    throw err
-  console.log("connected as id " + connection.threadId + "\n");
+    throw err;
+  connection.query("SELECT * FROM products", function(err, res) {
+    if (err) throw err;
+    console.log(res);
+  start();
+});
 });
 
 var custQ = [
@@ -33,11 +37,10 @@ var custQ = [
   }
   //answer takes user input and returns it to item_id user is purchasing
 ];
-start();
 
 // inquirer function asks user what they would like to purchase and how many
 function start() {
-//readProducts();
+
   inquirer
   .prompt(custQ).then(function(answer) {
 
@@ -46,6 +49,7 @@ function start() {
     var query = "SELECT * FROM products WHERE ?";
     connection.query(query, {item_id: item}, function (err, results) {
       
+
        var inStock = results[0].quantity;
 
        var total = results[0].price * quant;
@@ -63,4 +67,3 @@ function start() {
     });
   });
 }
-  
